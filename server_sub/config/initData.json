@@ -1,0 +1,19 @@
+{
+  "nats_server": {
+    "host": "localhost",
+    "port": "4223",
+    "cluster_id": "test-cluster",
+    "client_id": "test-client",
+    "channel": "testch"
+  },
+  "database": {
+    "user": "root",
+    "pass": "root",
+    "db_name": "ordersDb",
+    "driver_name": "postgres"
+  },
+  "http_server": {
+    "host": "localhost",
+    "port": "8080"
+  }
+}
