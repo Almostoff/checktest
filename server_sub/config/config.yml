@@ -3,10 +3,12 @@ nats-server:
   port: 4223
   cluster_id: "test-cluster"
   client_id: "test-client"
-  channel: "testch"
+  channel: "natschannel"
 
 database:
-  user: "root"
+  host: "localhost"
+  port: "54321"
+  user: "admin"
   pass: "root"
   dbname: "ordersDB"
   driverName: "postgres"

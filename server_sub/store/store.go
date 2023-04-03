@@ -11,13 +11,13 @@ import (
 
 type StoreService struct {
 	cache cache.CacheService
-	db    db.DBService // убрать *
+	db    db.DBService
 }
 
 func InitStore(cache cache.CacheService, db db.DBService) *StoreService {
 	StoreService := StoreService{
 		cache: cache,
-		db:    db, // убрать &
+		db:    db,
 	}
 	return &StoreService
 }
@@ -39,7 +39,6 @@ func (ss *StoreService) SaveOrderData(data []byte) error {
 	itemData.OrderData = *od
 	itemData.ID = od.OrderUid
 	ss.cache.AddToCache(*od)
-	fmt.Println("CheckItemData: ", itemData) //changes 31.03.14;32
 	_, err = ss.db.SaveOrder(itemData)
 	if err != nil {
 		fmt.Println(err)
@@ -63,7 +62,6 @@ func (ss *StoreService) GetAllOrders() ([]entity.DataItem, error) {
 
 func (ss *StoreService) RestoreCache() error {
 	dItems, err := ss.GetAllOrders()
-	fmt.Println(err)
 	if dItems == nil {
 		log.Println(err)
 		return err

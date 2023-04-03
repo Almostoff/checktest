@@ -9,7 +9,7 @@ const (
 	NatsStrUrl = "localhost:4223"
 	clusterId  = "test-cluster"
 	clientId   = "test-publisher"
-	ch         = "testch"
+	ch         = "natschannel"
 )
 
 func main() {

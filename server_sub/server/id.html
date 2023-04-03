@@ -4,8 +4,12 @@
     <title>Request</title>
 </head>
 <body>
-<h2>Request for id = {{.ID}}</h2>
-<h3>Your data is</h3>
-<div>{{.OrderData}}</div>
+    <h2>Request for id = {{.Id}}</h2>
+    <h3>Your data is</h3>
+    <div id="myData"><pre>{{.Data}}</pre></div>
+        <script>
+            var myData = JSON.parse(document.getElementById("myData").innerHTML);
+            document.getElementById("myData").innerHTML = JSON.stringify(myData, null, 2);
+        </script>
 </body>
 </html>

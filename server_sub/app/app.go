@@ -2,7 +2,6 @@ package app
 
 import (
 	"context"
-	"fmt"
 	"github.com/nats-io/stan.go"
 	"log"
 	"net/http"
@@ -36,18 +35,8 @@ func (app *App) Run() {
 	}
 
 	cacheService := cache.CacheInit()
-	fmt.Println("CHECK cache: ", cacheService)
 
 	storeService := store.InitStore(*cacheService, *db)
-	fmt.Println("CHECK store: ", storeService)
-
-	//err = storeService.SaveOrderData()
-
-	//err = storeService.RestoreCache()
-	//
-	//if err != nil {
-	//	log.Println("error restoring cache: db is empty")
-	//}
 
 	sc := subscriber.CreateSub(*storeService)
 	err = sc.Connect(app.cfg.Nats_server.Cluster_id, app.cfg.Nats_server.Client_id, app.cfg.Nats_server.Host+":"+app.cfg.Nats_server.Port)
@@ -95,5 +84,5 @@ func (app *App) Run() {
 	if err := server.Srv.Shutdown(ctx); err != nil {
 		log.Fatalf("Server Shutdown Failed:%+v", err)
 	}
-	log.Print("Server Exited Properly")
+	log.Print("Server Exited")
 }

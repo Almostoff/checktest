@@ -19,8 +19,8 @@ func NewDB(database *sql.DB) *DBService {
 func InitDBConn(cfg config.Config) (*DBService, error) {
 	dbConn := DBService{}
 	var err error
-	connStr := "user=" + cfg.Database.Username + " password=" + cfg.Database.Password + " dbname=" + cfg.Database.DBname + " sslmode=disable"
-	dbConn.db, err = sql.Open(cfg.Database.DriverName, connStr)
+	psqlInfo := fmt.Sprintf("host=%s port=%s user=%s password=%s dbname=%s sslmode=disable", cfg.Database.Addr, cfg.Database.Port, cfg.Database.Username, cfg.Database.Password, cfg.Database.DBname)
+	dbConn.db, err = sql.Open(cfg.Database.DriverName, psqlInfo)
 	if err != nil {
 		return &DBService{}, err
 	}
@@ -33,19 +33,16 @@ func (dbService *DBService) Close() error {
 }
 
 func (dbService *DBService) SaveOrder(jsonData *entity.DataItem) (sql.Result, error) {
-	//fmt.Println("CHECK FROM db.go jsonData: ", jsonData)
 	result, err := dbService.db.Exec(`insert into orders (id, orderdata) values ($1, $2)`, jsonData.ID, jsonData.OrderData)
-	//fmt.Println("qqqq")
-	if err == nil {
-		log.Println("New data in database stored: ", jsonData)
+	if err != nil {
+		log.Println(err)
 	}
-	//fmt.Println("CHECK result after exec db: ", result)
+	log.Println("New data stored")
 	return result, err
 }
 
 func (dbService *DBService) GetAllOrders() ([]entity.DataItem, error) {
 	rows, err := dbService.db.Query("select * from orders")
-	fmt.Println("CHECK rows from db.go: ", rows)
 	rowItem := entity.DataItem{}
 	rows.Scan(&rowItem.ID, &rowItem.OrderData)
 	defer rows.Close()

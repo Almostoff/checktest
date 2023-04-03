@@ -1,6 +1,7 @@
 package server
 
 import (
+	"encoding/json"
 	"github.com/gorilla/mux"
 	"html/template"
 	"log"
@@ -63,11 +64,16 @@ func (s *Server) ordersHandler(w http.ResponseWriter, r *http.Request) {
 		ID:        id,
 		OrderData: od,
 	}
+	data, _ := json.MarshalIndent(dataItem.OrderData, "", "  ")
 	parsedTemplate, _ := template.ParseFiles("./server/id.html")
-	err := parsedTemplate.Execute(w, dataItem)
+	res := map[string]interface{}{
+		"Id":   dataItem.ID,
+		"Data": template.JS(data),
+	}
+	err := parsedTemplate.Execute(w, res)
 	if err != nil {
+		log.Printf("Error occurred while executing the template for id=%s: %v", id, err)
 		w.Write([]byte("error while executing template"))
-		log.Printf("Error occurred while executing the template : ", dataItem)
 		return
 	}
 	w.WriteHeader(200)

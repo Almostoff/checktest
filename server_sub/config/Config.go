@@ -15,6 +15,8 @@ type Config struct {
 		Channel    string `yaml:"channel"`
 	} `yaml:"nats-server"`
 	Database struct {
+		Addr       string `yaml:"host""`
+		Port       string `yaml:"port"`
 		Username   string `yaml:"user"`
 		Password   string `yaml:"pass"`
 		DBname     string `yaml:"dbname"`
